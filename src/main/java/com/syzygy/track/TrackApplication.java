@@ -15,5 +15,4 @@ public class TrackApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TrackApplication.class, args);
 	}
-
 }
