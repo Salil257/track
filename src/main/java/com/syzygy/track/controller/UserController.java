@@ -27,6 +27,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,10 +35,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@Validated
 public class UserController {
     @Autowired
     private UserRepository userRepository;
@@ -71,7 +74,7 @@ public class UserController {
 
 
     @PostMapping("/authenticate")
-    public AuthenticateResponse authenticate(@RequestBody AuthenticateRequest jwtRequest) throws Exception{
+    public AuthenticateResponse authenticate(@Valid @RequestBody AuthenticateRequest jwtRequest) throws Exception{
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -92,7 +95,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String userRegister(@RequestBody User user) {
+    public String userRegister(@Valid @RequestBody User user) {
         User user1 = new User();
         user1.setUserName(user.getUserName());
         user1.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -121,7 +124,7 @@ public class UserController {
     }
 
     @PostMapping("/scan")
-    public String scan(HttpServletRequest request, @RequestBody ProductDetailDto productDetailDto) {
+    public String scan(HttpServletRequest request,@Valid @RequestBody ProductDetailDto productDetailDto) {
         String token = request.getHeader("Authorization").substring(7);
         String  userName = jwtUtility.getUsernameFromToken(token);
         User user = userRepository.findByUserName(userName).get();
@@ -134,7 +137,7 @@ public class UserController {
     }
 
     @PostMapping("/saveUserDetails")
-    public String updateUser(HttpServletRequest request, @RequestBody UpdateUserDto updateUserDto) {
+    public String updateUser(HttpServletRequest request,@Valid @RequestBody UpdateUserDto updateUserDto) {
         String token = request.getHeader("Authorization").substring(7);
         String  userName = jwtUtility.getUsernameFromToken(token);
         User user = userRepository.findByUserName(userName).get();
@@ -150,7 +153,7 @@ public class UserController {
     }
 
     @PostMapping("/updateUserDetails")
-    public String updateUserDetail(HttpServletRequest request, @RequestBody UpdateUserDto updateUserDto) {
+    public String updateUserDetail(HttpServletRequest request,@Valid @RequestBody UpdateUserDto updateUserDto) {
         String token = request.getHeader("Authorization").substring(7);
         String  userName = jwtUtility.getUsernameFromToken(token);
         User user = userRepository.findByUserName(userName).get();
@@ -165,7 +168,7 @@ public class UserController {
     }
 
     @PostMapping("/saveProduct")
-    public String saveProduct(HttpServletRequest request ,@RequestBody Product product) {
+    public String saveProduct(HttpServletRequest request ,@Valid @RequestBody Product product) {
         List<Holder> holderList = new ArrayList<Holder>();
         String token = request.getHeader("Authorization").substring(7);
         String  userName = jwtUtility.getUsernameFromToken(token);

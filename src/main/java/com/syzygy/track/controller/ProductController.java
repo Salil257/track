@@ -3,11 +3,13 @@ package com.syzygy.track.controller;
 import com.syzygy.track.dto.productdto.ProductDto;
 import com.syzygy.track.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Validated
 public class ProductController {
 
     @Autowired
