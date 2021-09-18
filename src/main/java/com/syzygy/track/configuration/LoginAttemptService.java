@@ -15,7 +15,7 @@ public class LoginAttemptService {
     public LoginAttemptService() {
         super();
         attemptsCache = CacheBuilder.newBuilder().
-                expireAfterWrite(2, TimeUnit.HOURS).build(new CacheLoader<String, Integer>() {
+                expireAfterWrite(2, TimeUnit.MINUTES).build(new CacheLoader<String, Integer>() {
             public Integer load(String key) {
                 return 0;
             }
@@ -39,7 +39,7 @@ public class LoginAttemptService {
 
     public boolean isBlocked(String key) {
         try {
-            int MAX_ATTEMPT = 10;
+            int MAX_ATTEMPT = 3;
             return attemptsCache.get(key) >= MAX_ATTEMPT;
         } catch (ExecutionException e) {
             return false;
