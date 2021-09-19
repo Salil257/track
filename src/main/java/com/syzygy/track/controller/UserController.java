@@ -74,7 +74,7 @@ public class UserController {
 
 
     @PostMapping("/authenticate")
-    public AuthenticateResponse authenticate(@Valid @RequestBody AuthenticateRequest jwtRequest) throws Exception{
+    public AuthenticateResponse authenticate(@Valid @RequestBody AuthenticateRequest jwtRequest) throws RuntimeException{
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -83,7 +83,7 @@ public class UserController {
                     )
             );
         } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
+            throw new RuntimeException("INVALID_CREDENTIALS", e);
         }
 
         final UserDetails userDetails
